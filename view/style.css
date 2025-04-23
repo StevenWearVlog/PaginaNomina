@@ -7,7 +7,6 @@
 }
 *{
     font-family: "Special Gothic Expanded One"
-
 }
 body{
     background-color: rgb(0, 0, 0);
@@ -27,9 +26,9 @@ body{
     cursor: pointer;
 }
 .header .logo-nomina img{
-    height: 70px;
+    height: 75px;
     width: auto;
-    transition: all;
+    transition: all 0.3s;
 }
 
 .header .logo-nomina img:hover{
@@ -55,7 +54,23 @@ body{
     text-decoration: none;
 }
 .header .nav-links li a:hover{
-    color: aqua;
+    color: rgb(255, 255, 255);
+}
+.header .btn button{
+    font-weight: 700;
+    color: #0f0f0f;
+    padding: 10px;
+    background-color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+.header .btn button:hover{
+    background-color: white;
+    color: black;
+    transform: scale(1.1);
+
 }
 
 .contenedor-titulo{

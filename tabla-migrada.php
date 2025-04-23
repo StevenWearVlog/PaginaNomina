@@ -5,18 +5,22 @@
     <meta charset="UTF-8">
     <title>Nomina</title>
     <link rel="stylesheet" href="view/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="cuerpo">
         <header class="header">
             <div class="logo-nomina">
-                <img src="view/images/logo-nomina.png" alt="logo de la marca de la nomina">
+                <img src="../nomina/view/images/Logo_nomina.png" alt="logo de la marca de la nomina">
             </div>
             <nav>
                 <ul class="nav-links">
                     <li> <a href="index.html">Inicio</a> </li>
                 </ul>
             </nav>
+            <a href="#" class="btn"><button>Contacto soporte</button></a>
         </header>
     </div>
 
