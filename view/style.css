@@ -5,7 +5,10 @@
     font-size: 20px;
     border-radius: 100px;
 }
+*{
+    font-family: "Special Gothic Expanded One"
 
+}
 body{
     background-color: rgb(0, 0, 0);
     font-family: "Special Gothic Expanded One"

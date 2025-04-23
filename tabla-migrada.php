@@ -49,7 +49,49 @@
             </table>
 
             <?php include 'view/estadisticas.php'; ?>
+            <!-- GRÁFICO DE SALARIOS -->
+            <div class="contenedor-estadisticas" style="color:white; margin-top: 50px;">
+                <h2>📉 Gráfico: Salario por Empleado</h2>
+                <canvas id="graficoSalarios" width="800" height="300" style="background-color: white; border-radius: 15px;"></canvas>
+            </div>
+
         </div>
     </div>
+
+        <!-- Script para generar el gráfico -->
+        <?php
+    $nombres = [];
+    $salarios = [];
+    foreach ($datos as $e) {
+        if (is_numeric($e['salario'])) {
+            $nombres[] = $e['nombre'];
+            $salarios[] = $e['salario'];
+        }
+    }
+    ?>
+    <script>
+        const ctx = document.getElementById('graficoSalarios').getContext('2d');
+        const grafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?= json_encode($nombres) ?>,
+                datasets: [{
+                    label: 'Salario por Empleado',
+                    data: <?= json_encode($salarios) ?>,
+                    backgroundColor: 'rgba(0, 255, 255, 0.5)',
+                    borderColor: 'aqua',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
 </body>
 </html>
