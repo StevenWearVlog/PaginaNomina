@@ -6,7 +6,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] == 0) {
     $archivoTemporal = $_FILES['archivo']['tmp_name'];
-    $destino = '../uploads/nomina.xls';
+    $destino = '../uploads/nomina.xlsx';
     move_uploaded_file($archivoTemporal, $destino);
 
     $documento = IOFactory::load($destino);
@@ -14,28 +14,47 @@ if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] == 0) {
 
     $empleados = [];
 
-    foreach ($hoja->getRowIterator() as $fila) {
-        $filaIndex = $fila->getRowIndex();
-        if ($filaIndex < 2) continue;
+    // Leer solo las filas de los empleados (10 a 35)
+    $filaInicial = 10;
+    $filaFinal = 35;
 
-        $id = $hoja->getCell("A$filaIndex")->getCalculatedValue();
-        $nombre = $hoja->getCell("B$filaIndex")->getCalculatedValue();
-        $cargo = $hoja->getCell("C$filaIndex")->getCalculatedValue();
-        $salario = $hoja->getCell("D$filaIndex")->getCalculatedValue();
+    for ($filaIndex = $filaInicial; $filaIndex <= $filaFinal; $filaIndex++) {
+        $nombre           = $hoja->getCell("A$filaIndex")->getCalculatedValue();
+        $salarioMensual   = $hoja->getCell("B$filaIndex")->getCalculatedValue();
+        $diasLaborados    = $hoja->getCell("C$filaIndex")->getCalculatedValue();
+        $totalSalario     = $hoja->getCell("D$filaIndex")->getCalculatedValue();
+        $valorExtras      = $hoja->getCell("H$filaIndex")->getCalculatedValue();
+        $comisiones       = $hoja->getCell("L$filaIndex")->getCalculatedValue();
+        $totalDevengado   = $hoja->getCell("M$filaIndex")->getCalculatedValue();
+        $totalDeducido    = $hoja->getCell("Q$filaIndex")->getCalculatedValue();
+        $netoPagar        = $hoja->getCell("R$filaIndex")->getCalculatedValue();
 
+        // Validar que los datos sean consistentes
         if (
-            is_numeric($salario) &&
-            !empty($id) &&
             !empty($nombre) &&
-            strtoupper(trim($nombre)) !== 'TOTAL' &&
-            strtoupper(trim($salario)) !== 'TOTAL'
+            is_numeric($salarioMensual) &&
+            is_numeric($netoPagar) &&
+            !in_array(strtoupper(trim($nombre)), ['HORA DIURNA', 'HORA NOCTURNA', 'DOMINICAL', 'TOTAL'])
         ) {
-            $empleado = new Empleado($id, $nombre, $cargo, $salario);
-            $empleados[] = $empleado->toArray();
+            $empleado = [
+                "nombre"              => $nombre,
+                "salario_mensual"     => (float)$salarioMensual,
+                "dias_laborados"      => (int)$diasLaborados,
+                "total_salario"       => (float)$totalSalario,
+                "valor_horas_extras"  => (float)$valorExtras,
+                "comisiones"          => (float)$comisiones,
+                "total_devengado"     => (float)$totalDevengado,
+                "total_deducido"      => (float)$totalDeducido,
+                "neto_pagar"          => (float)$netoPagar
+            ];
+            $empleados[] = $empleado;
         }
     }
 
-    file_put_contents('../json/nomina.json', json_encode($empleados, JSON_PRETTY_PRINT));
+    // Guardar el archivo JSON
+    file_put_contents('../json/nomina.json', json_encode($empleados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+    // Redirigir a la vista principal
     header('Location: ../tabla-migrada.php');
     exit;
 } else {

@@ -35,14 +35,20 @@
         <h1>TU TABLA NOMINA</h1>
         <div class="contenedor-de-tabla">
             <table border="1" style="color:white; border-collapse: collapse; width: 90%; text-align: center;">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Cargo</th>
-                        <th>Salario</th>
-                    </tr>
-                </thead>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Salario Mensual</th>
+                    <th>Días Laborados</th>
+                    <th>Total Salario</th>
+                    <th>Horas Extras</th>
+                    <th>Comisiones</th>
+                    <th>Total Devengado</th>
+                    <th>Total Deducido</th>
+                    <th>Neto a Pagar</th>
+                </tr>
+            </thead>
+
                 <tbody>
                     <?php include 'view/tabla.php'; ?>
                 </tbody>
@@ -50,48 +56,59 @@
 
             <?php include 'view/estadisticas.php'; ?>
             <!-- GRÁFICO DE SALARIOS -->
-            <div class="contenedor-estadisticas" style="color:white; margin-top: 50px;">
-                <h2>📉 Gráfico: Salario por Empleado</h2>
-                <canvas id="graficoSalarios" width="800" height="300" style="background-color: white; border-radius: 15px;"></canvas>
-            </div>
+            <!-- GRÁFICO DE NETO A PAGAR -->
+            <?php
+            $nombres = [];
+            $netos = [];
 
-        </div>
-    </div>
-
-        <!-- Script para generar el gráfico -->
-        <?php
-    $nombres = [];
-    $salarios = [];
-    foreach ($datos as $e) {
-        if (is_numeric($e['salario'])) {
-            $nombres[] = $e['nombre'];
-            $salarios[] = $e['salario'];
-        }
-    }
-    ?>
-    <script>
-        const ctx = document.getElementById('graficoSalarios').getContext('2d');
-        const grafico = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: <?= json_encode($nombres) ?>,
-                datasets: [{
-                    label: 'Salario por Empleado',
-                    data: <?= json_encode($salarios) ?>,
-                    backgroundColor: 'rgba(0, 255, 255, 0.5)',
-                    borderColor: 'aqua',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+            foreach ($datos as $e) {
+                if (isset($e['nombre'], $e['neto_pagar']) && is_numeric($e['neto_pagar'])) {
+                    $nombres[] = $e['nombre'];
+                    $netos[] = (float)$e['neto_pagar'];
                 }
             }
-        });
-    </script>
+            ?>
+            <div class="contenedor-estadisticas" style="color:white; margin-top: 50px;">
+                <h2>📉 Gráfico: Neto a Pagar por Empleado</h2>
+                <canvas id="graficoNeto" width="800" height="300" style="background-color: white; border-radius: 15px;"></canvas>
+            </div>
+
+            <script>
+                const labels = <?= json_encode($nombres) ?>;
+                const data = <?= json_encode($netos) ?>;
+
+                const ctx = document.getElementById('graficoNeto').getContext('2d');
+                if (labels.length > 0 && data.length > 0) {
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Neto a Pagar',
+                                data: data,
+                                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return '$' + value.toLocaleString();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            </script>
+        </div>
+    </div>
 
 </body>
 </html>
