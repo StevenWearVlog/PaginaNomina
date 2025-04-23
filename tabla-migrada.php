@@ -20,7 +20,7 @@
                     <li> <a href="index.html">Inicio</a> </li>
                 </ul>
             </nav>
-            <a href="#" class="btn"><button>Contacto soporte</button></a>
+            <a href="https://wa.me/qr/K3S5FEXWJUIMD1" class="btn"><button>Contacto soporte</button></a>
         </header>
     </div>
 

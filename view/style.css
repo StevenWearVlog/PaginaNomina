@@ -85,6 +85,7 @@ body{
 }
 
 .carga-de-archivos{
+    flex-direction: column;
     margin: 10px;
     padding: 20px;
     border-radius: 100px;
@@ -100,7 +101,7 @@ body{
     justify-content: center;
 }
 
-.boton-envio{
+.boton-envio {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,4 +128,22 @@ body{
     background-color: #0f0f0f;
     margin: 10px;
 
+}
+.texto-largo-antes-de-migrar{
+    display: flex;
+    flex-direction: column;
+}
+.boton-migrar{
+    background-color: white;
+    color: black;
+    border-radius: 30px;
+}
+.boton-envio-index{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    border-radius: 10px;
+    padding: 20px;
+    color: black;
 }
