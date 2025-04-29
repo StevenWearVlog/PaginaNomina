@@ -110,25 +110,7 @@ body{
     padding: 20px;
     color: black;
 }
-.contenedor-tabla{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    background-color: #1a1a1a;
-    color: white;
-    margin: 30px;
-    padding: 15px;
-    height: 1000px;
-    border-radius: 50px;
-}
-.contenedor-de-tabla{
-    display: grid;
-    place-items: center;
-    height: 100px;
-    background-color: #0f0f0f;
-    margin: 10px;
 
-}
 .texto-largo-antes-de-migrar{
     text-align: center;
     align-items: center;

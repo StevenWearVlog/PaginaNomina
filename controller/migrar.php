@@ -14,7 +14,7 @@ if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] == 0) {
 
     $empleados = [];
 
-    // Leer solo las filas de los empleados (10 a 35)
+    // Leer solo filas de empleados (fila 10 a fila 35)
     $filaInicial = 10;
     $filaFinal = 35;
 
@@ -29,32 +29,33 @@ if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] == 0) {
         $totalDeducido    = $hoja->getCell("Q$filaIndex")->getCalculatedValue();
         $netoPagar        = $hoja->getCell("R$filaIndex")->getCalculatedValue();
 
-        // Validar que los datos sean consistentes
+        // Validar que la fila sea de un empleado
         if (
             !empty($nombre) &&
             is_numeric($salarioMensual) &&
             is_numeric($netoPagar) &&
             !in_array(strtoupper(trim($nombre)), ['HORA DIURNA', 'HORA NOCTURNA', 'DOMINICAL', 'TOTAL'])
         ) {
-            $empleado = [
-                "nombre"              => $nombre,
-                "salario_mensual"     => (float)$salarioMensual,
-                "dias_laborados"      => (int)$diasLaborados,
-                "total_salario"       => (float)$totalSalario,
-                "valor_horas_extras"  => (float)$valorExtras,
-                "comisiones"          => (float)$comisiones,
-                "total_devengado"     => (float)$totalDevengado,
-                "total_deducido"      => (float)$totalDeducido,
-                "neto_pagar"          => (float)$netoPagar
-            ];
-            $empleados[] = $empleado;
+            $empleado = new Empleado(
+                $nombre,
+                (float)$salarioMensual,
+                (int)$diasLaborados,
+                (float)$totalSalario,
+                (float)$valorExtras,
+                (float)$comisiones,
+                (float)$totalDevengado,
+                (float)$totalDeducido,
+                (float)$netoPagar
+            );
+
+            $empleados[] = $empleado->toArray(); // Guardamos usando POO
         }
     }
 
     // Guardar el archivo JSON
     file_put_contents('../json/nomina.json', json_encode($empleados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-    // Redirigir a la vista principal
+    // Redirigir
     header('Location: ../tabla-migrada.php');
     exit;
 } else {
