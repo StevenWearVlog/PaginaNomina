@@ -119,8 +119,11 @@ body{
     color: white;
     margin: 30px;
     padding: 15px;
-    height: 1000px;
+    height: 1200px;
     border-radius: 50px;
+}
+.contenedor-tabla{
+    height: 1200px;
 }
 
 .texto-largo-antes-de-migrar{
