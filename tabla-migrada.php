@@ -4,23 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Nomina</title>
-    <link rel="stylesheet" href="../nomina/view/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="view/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="cuerpo">
         <header class="header">
             <div class="logo-nomina">
-                <img src="../nomina/view/images/Logo_nomina.png" alt="logo de la marca de la nomina">
+                <img src="view/images/logo-nomina.png" alt="Logo del sistema de nómina">
             </div>
             <nav>
                 <ul class="nav-links">
-                    <li> <a href="index.html">Inicio</a> </li>
+                    <li><a href="index.html">Inicio</a></li>
                 </ul>
             </nav>
-            <a href="https://wa.me/qr/K3S5FEXWJUIMD1" class="btn"><button>Contacto soporte</button></a>
         </header>
     </div>
 
@@ -28,6 +25,7 @@
         <h1>MIGRACIÓN <br> DE DATOS</h1>
     </div>
 
+    <!-- Formulario para subir archivo Excel -->
     <div class="carga-de-archivos">
         <form action="controller/migrar.php" method="post" enctype="multipart/form-data">
             <input type="file" name="archivo" required>
@@ -35,31 +33,32 @@
         </form>
     </div>
 
+    <!-- Tabla de datos migrados -->
     <div class="contenedor-tabla">
         <h1>TU TABLA NOMINA</h1>
         <div>
-            <table border="1" style="color:white; border-collapse: collapse; width: 90%; text-align: center;">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Salario Mensual</th>
-                    <th>Días Laborados</th>
-                    <th>Total Salario</th>
-                    <th>Horas Extras</th>
-                    <th>Comisiones</th>
-                    <th>Total Devengado</th>
-                    <th>Total Deducido</th>
-                    <th>Neto a Pagar</th>
-                </tr>
-            </thead>
-
+            <table border="1" style="color:white; border-collapse: collapse; width: 100%; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Salario Mensual</th>
+                        <th>Días Laborados</th>
+                        <th>Total Salario</th>
+                        <th>Horas Extras</th>
+                        <th>Comisiones</th>
+                        <th>Total Devengado</th>
+                        <th>Total Deducido</th>
+                        <th>Neto a Pagar</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <?php include 'view/tabla.php'; ?>
                 </tbody>
             </table>
 
+            <!-- Estadísticas -->
             <?php include 'view/estadisticas.php'; ?>
-            <!-- GRÁFICO DE SALARIOS -->
+
             <!-- GRÁFICO DE NETO A PAGAR -->
             <?php
             $nombres = [];
@@ -81,8 +80,12 @@
                 const labels = <?= json_encode($nombres) ?>;
                 const data = <?= json_encode($netos) ?>;
 
-                const ctx = document.getElementById('graficoNeto').getContext('2d');
-                if (labels.length > 0 && data.length > 0) {
+                console.log("👥 Nombres:", labels);
+                console.log("💰 Netos:", data);
+
+                const ctx = document.getElementById('graficoNeto')?.getContext('2d');
+
+                if (labels.length > 0 && data.length > 0 && ctx) {
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -109,10 +112,11 @@
                             }
                         }
                     });
+                } else {
+                    console.warn("⚠️ No hay datos válidos para graficar o canvas no encontrado.");
                 }
             </script>
         </div>
     </div>
-
 </body>
 </html>
