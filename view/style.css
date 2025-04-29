@@ -112,6 +112,7 @@ body{
 }
 .contenedor-tabla{
     display: flex;
+    justify-content: center;
     flex-direction: column;
     text-align: center;
     background-color: #1a1a1a;
@@ -121,12 +122,7 @@ body{
     height: 1000px;
     border-radius: 50px;
 }
-.contenedor-de-tabla{
-    display: grid;
-    place-items: center;
-    height: 100px;
 
-}
 .texto-largo-antes-de-migrar{
     text-align: center;
     align-items: center;

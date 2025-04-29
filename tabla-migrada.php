@@ -37,7 +37,7 @@
 
     <div class="contenedor-tabla">
         <h1>TU TABLA NOMINA</h1>
-        <div class="contenedor-de-tabla">
+        <div>
             <table border="1" style="color:white; border-collapse: collapse; width: 90%; text-align: center;">
             <thead>
                 <tr>
