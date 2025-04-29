@@ -52,8 +52,15 @@ if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] == 0) {
         }
     }
 
-    // Guardar el archivo JSON
-    file_put_contents('../json/nomina.json', json_encode($empleados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    // Guardar JSON principal (actual)
+file_put_contents('../json/nomina.json', json_encode($empleados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+// Crear nombre con fecha y hora para el historial
+$timestamp = date('Y-m-d_His');
+$historialPath = "../json/historial/nomina_$timestamp.json";
+
+// Guardar copia histórica
+file_put_contents($historialPath, json_encode($empleados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
     // Redirigir
     header('Location: ../tabla-migrada.php');
